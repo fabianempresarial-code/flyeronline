@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamarindo - Menú Digital</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --paper: #f3d5b5;
+            --wood-dark: #3e2723;
+            --accent: #f39c12;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* CONTENEDOR QUE SE CONVERTIRÁ EN IMAGEN */
+        #flyer-export {
+            width: 100%;
+            max-width: 400px;
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #5d4037;
+            background-image: url('https://images.unsplash.com/photo-1599427303058-f04cbcf4756f?q=80&w=600&auto=format&fit=crop');
+            background-size: cover;
+            min-height: 700px;
+            position: relative;
+            padding: 20px 0;
+            overflow: hidden;
+            border: 5px solid #3e2723;
+        }
+
+        /* LOGO ESTILO SELLO */
+        .header-section { text-align: center; margin-bottom: 20px; }
+        .stamp {
+            width: 140px;
+            height: 140px;
+            background: #fff;
+            border-radius: 50%;
+            border: 6px double var(--accent);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .stamp h2 { margin: 0; font-size: 1.2rem; color: #333; }
+        .stamp h1 { margin: 0; font-size: 2rem; color: var(--wood-dark); }
+
+        .menu-banner {
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            font-size: 2.5rem;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+        /* FILAS DE MENÚ */
+        .item-row {
+            display: flex;
+            align-items: center;
+            margin: 15px 10px;
+        }
+        .circle-frame {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--paper);
+            background-size: cover;
+            background-position: center;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.6);
+            z-index: 2;
+            flex-shrink: 0;
+        }
+        .tag-label {
+            background: var(--paper);
+            padding: 10px 15px 10px 40px;
+            margin-left: -35px;
+            flex-grow: 1;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+            color: #2b1d0e;
+            z-index: 1;
+        }
+        .tag-label b { display: block; font-size: 0.8rem; color: #8d6e63; text-transform: uppercase; }
+        .tag-label span { font-size: 1rem; font-weight: bold; }
+
+        /* DECORACIÓN INFERIOR */
+        .footer-deco {
+            margin-top: 20px;
+            height: 80px;
+            background: url('https://img.freepik.com/foto-gratis/mantel-cuadros-rojos-sobre-fondo-blanco_1359-251.jpg');
+            background-size: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .price-tag {
+            background: #000;
+            color: gold;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid gold;
+        }
+
+        /* CONTROLES DE LA WEB */
+        .web-ui {
+            width: 100%;
+            max-width: 400px;
+            background: #222;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-download { background: #2ecc71; color: white; }
+        .btn-share { background: #3498db; color: white; }
+        select { padding: 15px; border-radius: 8px; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div id="flyer-export">
+        <div class="header-section">
+            <div class="stamp">
+                <h2>REST.</h2>
+                <h1>TAMARINDO</h1>
+            </div>
+            <div class="menu-banner" id="displayDia">CARGANDO...</div>
+        </div>
+
+        <div id="menuItems">
+            <div class="item-row">
+                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?w=200');"></div>
+                <div class="tag-label"><b>🥣 SOPA</b> <span id="sopa">-</span></div>
+            </div>
+            <div class="item-row">
+                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200');"></div>
+                <div class="tag-label"><b>🍖 PROTEÍNA</b> <span id="proteina">-</span></div>
+            </div>
+            <div class="item-row">
+                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200');"></div>
+                <div class="tag-label"><b>🥗 PRINCIPIO</b> <span id="principio">-</span></div>
+            </div>
+            <div class="item-row">
+                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1512058560366-cd2427ba5e73?w=200');"></div>
+                <div class="tag-label"><b>🍚 ACOMPAÑANTES</b> <span id="acomp">-</span></div>
+            </div>
+            <div class="item-row">
+                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1544145945-f904253d0c71?w=200');"></div>
+                <div class="tag-label"><b>🥤 BEBIDA</b> <span id="bebida">-</span></div>
+            </div>
+        </div>
+
+        <div class="footer-deco">
+            <div class="price-tag">$12.000</div>
+        </div>
+        <p style="color:white; text-align:center; font-size: 10px; margin:0;">Ordena al: 961 275 3837</p>
+    </div>
+
+    <div class="web-ui">
+        <select id="daySelector" onchange="cargarMenu(this.value)">
+            <option value="LUNES">LUNES</option>
+            <option value="MARTES">MARTES</option>
+            <option value="MIERCOLES">MIÉRCOLES</option>
+            <option value="JUEVES">JUEVES</option>
+            <option value="VIERNE">VIERNES</option>
+            <option value="SABADO">SÁBADO</option>
+        </select>
+        <button class="btn btn-download" onclick="descargarImagen()">📸 Descargar Imagen para Redes</button>
+        <button class="btn btn-share" onclick="compartirWhatsApp()">📲 Enviar por WhatsApp</button>
+    </div>
+
+    <script>
+        const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS29H3hxA9X8VcqQqGZlT4duXOIT3xAdIhExEIut9frN0i78naYSj6gnWFkWliWwKNLT5tGNlaYh16j/pub?output=csv";
+
+        async function cargarMenu(dia) {
+            try {
+                const res = await fetch(sheetUrl);
+                const csv = await res.text();
+                const filas = csv.split('\n').map(f => f.split(','));
+                const menu = filas.find(f => f[0].trim().includes(dia));
+
+                if(menu) {
+                    document.getElementById('displayDia').innerText = dia;
+                    document.getElementById('principio').innerText = menu[1] || "-";
+                    document.getElementById('proteina').innerText = menu[2] || "-";
+                    document.getElementById('acomp').innerText = menu[3] || "-";
+                    document.getElementById('sopa').innerText = menu[4] || "-";
+                    document.getElementById('bebida').innerText = menu[5] || "-";
+                }
+            } catch (e) { alert("Error al conectar con Google Sheets"); }
+        }
+
+        function descargarImagen() {
+            const container = document.getElementById("flyer-export");
+            html2canvas(container, { useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Menu_Tamarindo_${document.getElementById('displayDia').innerText}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        function compartirWhatsApp() {
+            const dia = document.getElementById('displayDia').innerText;
+            const prot = document.getElementById('proteina').innerText;
+            const msg = `*Menú Tamarindo - ${dia}*%0A🍖 Proteína: ${prot}%0A🥗 Principio: ${document.getElementById('principio').innerText}%0A🥤 Bebida: ${document.getElementById('bebida').innerText}%0A💰 Solo $12.000`;
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        }
+
+        // Inicio automático
+        const dias = ["DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNE", "SABADO"];
+        const hoy = dias[new Date().getDay()] === "DOMINGO" ? "LUNES" : dias[new Date().getDay()];
+        document.getElementById('daySelector').value = hoy;
+        cargarMenu(hoy);
+    </script>
+</body>
+</html>
