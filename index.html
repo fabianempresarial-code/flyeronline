@@ -3,182 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamarindo - Menú Digital</title>
+    <title>Menú Tamarindo - Flyer Automático</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --paper: #f3d5b5;
-            --wood-dark: #3e2723;
-            --accent: #f39c12;
+            --paper: #f4d9b8;
+            --wood: #4e342e;
+            --accent: #e67e22;
         }
 
         body {
             margin: 0;
-            padding: 0;
             background-color: #1a1a1a;
             font-family: 'Georgia', serif;
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #3e2723;
         }
 
-        /* CONTENEDOR QUE SE CONVERTIRÁ EN IMAGEN */
-        #flyer-export {
+        /* CONTENEDOR FLYER (LO QUE SE CAPTURA) */
+        #flyer {
             width: 100%;
-            max-width: 400px;
-            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #5d4037;
-            background-image: url('https://images.unsplash.com/photo-1599427303058-f04cbcf4756f?q=80&w=600&auto=format&fit=crop');
+            max-width: 420px;
+            min-height: 800px;
+            background: url('https://images.unsplash.com/photo-1588345921523-c2dcd5702dbe?q=80&w=600&auto=format&fit=crop') center; /* Madera oscura */
             background-size: cover;
-            min-height: 700px;
             position: relative;
             padding: 20px 0;
-            overflow: hidden;
-            border: 5px solid #3e2723;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 6px solid #2b1d0e;
         }
 
-        /* LOGO ESTILO SELLO */
-        .header-section { text-align: center; margin-bottom: 20px; }
-        .stamp {
+        /* Logo Estilo Retro */
+        .logo-wrap {
             width: 140px;
             height: 140px;
-            background: #fff;
+            background: white;
             border-radius: 50%;
-            border: 6px double var(--accent);
-            margin: 0 auto;
+            border: 5px double var(--accent);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            margin-bottom: 10px;
         }
-        .stamp h2 { margin: 0; font-size: 1.2rem; color: #333; }
-        .stamp h1 { margin: 0; font-size: 2rem; color: var(--wood-dark); }
+        .logo-wrap h2 { margin: 0; font-size: 0.9rem; color: #777; letter-spacing: 2px; }
+        .logo-wrap h1 { margin: 0; font-size: 1.6rem; color: var(--wood); font-weight: 900; }
 
-        .menu-banner {
+        .day-title {
             color: white;
-            text-shadow: 2px 2px 4px black;
-            font-size: 2.5rem;
-            margin: 10px 0;
+            font-size: 3rem;
             text-transform: uppercase;
+            text-shadow: 3px 3px 8px rgba(0,0,0,1);
+            margin: 10px 0 20px 0;
         }
 
-        /* FILAS DE MENÚ */
-        .item-row {
+        /* FILAS DE PLATOS CON IMÁGENES COMPLETAS */
+        .menu-grid { width: 92%; }
+        .row {
             display: flex;
             align-items: center;
-            margin: 15px 10px;
+            margin-bottom: 18px;
+            filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
         }
-        .circle-frame {
-            width: 100px;
-            height: 100px;
+        .img-box {
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             border: 4px solid var(--paper);
             background-size: cover;
             background-position: center;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.6);
             z-index: 2;
-            flex-shrink: 0;
+            position: relative;
         }
-        .tag-label {
+        .label-box {
             background: var(--paper);
-            padding: 10px 15px 10px 40px;
-            margin-left: -35px;
+            padding: 10px 15px 10px 45px;
+            margin-left: -40px;
             flex-grow: 1;
-            border-radius: 0 10px 10px 0;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-            color: #2b1d0e;
-            z-index: 1;
+            border-radius: 0 12px 12px 0;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            clip-path: polygon(0% 0%, 98% 0%, 100% 50%, 98% 100%, 0% 100%, 5% 50%);
         }
-        .tag-label b { display: block; font-size: 0.8rem; color: #8d6e63; text-transform: uppercase; }
-        .tag-label span { font-size: 1rem; font-weight: bold; }
+        .label-box b { font-size: 0.75rem; color: #8d6e63; text-transform: uppercase; letter-spacing: 1px; }
+        .label-box span { font-size: 1.05rem; font-weight: bold; line-height: 1.2; color: #2b1d0e; }
 
-        /* DECORACIÓN INFERIOR */
+        /* DECORACIÓN FINAL */
         .footer-deco {
-            margin-top: 20px;
-            height: 80px;
+            margin-top: auto;
+            width: 100%;
+            height: 100px;
             background: url('https://img.freepik.com/foto-gratis/mantel-cuadros-rojos-sobre-fondo-blanco_1359-251.jpg');
             background-size: 60px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .price-tag {
+        .price-badge {
             background: #000;
-            color: gold;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 1.5rem;
+            color: #f1c40f;
+            padding: 8px 25px;
+            border: 2px solid #f1c40f;
+            border-radius: 50px;
+            font-size: 1.8rem;
             font-weight: bold;
-            border: 2px solid gold;
+            transform: translateY(-40px);
         }
 
-        /* CONTROLES DE LA WEB */
-        .web-ui {
+        /* BOTONERA WEB */
+        .ui {
             width: 100%;
-            max-width: 400px;
-            background: #222;
+            max-width: 420px;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            background: #222;
             box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
+        .ui select { grid-column: span 2; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
         .btn {
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
+            padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; font-size: 0.8rem;
         }
-        .btn-download { background: #2ecc71; color: white; }
-        .btn-share { background: #3498db; color: white; }
-        select { padding: 15px; border-radius: 8px; font-weight: bold; }
-
+        .btn-share { background: #e67e22; color: white; }
+        .btn-down { background: #27ae60; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="flyer-export">
-        <div class="header-section">
-            <div class="stamp">
-                <h2>REST.</h2>
-                <h1>TAMARINDO</h1>
-            </div>
-            <div class="menu-banner" id="displayDia">CARGANDO...</div>
+    <div id="flyer">
+        <div class="logo-wrap">
+            <h2>REST.</h2>
+            <h1>TAMARINDO</h1>
         </div>
 
-        <div id="menuItems">
-            <div class="item-row">
-                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?w=200');"></div>
-                <div class="tag-label"><b>🥣 SOPA</b> <span id="sopa">-</span></div>
+        <div class="day-title" id="diaTxt">...</div>
+
+        <div class="menu-grid">
+            <div class="row">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?w=200');"></div>
+                <div class="label-box"><b>🥣 Entradas / Sopas</b> <span id="sopa">-</span></div>
             </div>
-            <div class="item-row">
-                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200');"></div>
-                <div class="tag-label"><b>🍖 PROTEÍNA</b> <span id="proteina">-</span></div>
+            <div class="row">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200');"></div>
+                <div class="label-box"><b>🍖 Proteínas</b> <span id="proteina">-</span></div>
             </div>
-            <div class="item-row">
-                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200');"></div>
-                <div class="tag-label"><b>🥗 PRINCIPIO</b> <span id="principio">-</span></div>
+            <div class="row">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200');"></div>
+                <div class="label-box"><b>🥗 Principios</b> <span id="principio">-</span></div>
             </div>
-            <div class="item-row">
-                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1512058560366-cd2427ba5e73?w=200');"></div>
-                <div class="tag-label"><b>🍚 ACOMPAÑANTES</b> <span id="acomp">-</span></div>
+            <div class="row">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1512058560366-cd2427ba5e73?w=200');"></div>
+                <div class="label-box"><b>🍚 Acompañantes</b> <span id="acomp">-</span></div>
             </div>
-            <div class="item-row">
-                <div class="circle-frame" style="background-image: url('https://images.unsplash.com/photo-1544145945-f904253d0c71?w=200');"></div>
-                <div class="tag-label"><b>🥤 BEBIDA</b> <span id="bebida">-</span></div>
+            <div class="row">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1544145945-f904253d0c71?w=200');"></div>
+                <div class="label-box"><b>🥤 Jugo Natural</b> <span id="bebida">-</span></div>
             </div>
         </div>
 
         <div class="footer-deco">
-            <div class="price-tag">$12.000</div>
+            <div class="price-badge">$12.000</div>
+            <p style="color:white; margin:0; font-size:12px; font-weight:bold; text-shadow:1px 1px black;">
+                📍 Calle Principal • Domicilios: 961 275 3837
+            </p>
         </div>
-        <p style="color:white; text-align:center; font-size: 10px; margin:0;">Ordena al: 961 275 3837</p>
     </div>
 
-    <div class="web-ui">
-        <select id="daySelector" onchange="cargarMenu(this.value)">
+    <div class="ui">
+        <select id="selDia" onchange="fetchMenu(this.value)">
             <option value="LUNES">LUNES</option>
             <option value="MARTES">MARTES</option>
             <option value="MIERCOLES">MIÉRCOLES</option>
@@ -186,53 +188,54 @@
             <option value="VIERNE">VIERNES</option>
             <option value="SABADO">SÁBADO</option>
         </select>
-        <button class="btn btn-download" onclick="descargarImagen()">📸 Descargar Imagen para Redes</button>
-        <button class="btn btn-share" onclick="compartirWhatsApp()">📲 Enviar por WhatsApp</button>
+        <button class="btn btn-share" onclick="compartirImagen()">🚀 Compartir App</button>
+        <button class="btn btn-down" onclick="descargarFlyer()">💾 Guardar Imagen</button>
     </div>
 
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS29H3hxA9X8VcqQqGZlT4duXOIT3xAdIhExEIut9frN0i78naYSj6gnWFkWliWwKNLT5tGNlaYh16j/pub?output=csv";
 
-        async function cargarMenu(dia) {
-            try {
-                const res = await fetch(sheetUrl);
-                const csv = await res.text();
-                const filas = csv.split('\n').map(f => f.split(','));
-                const menu = filas.find(f => f[0].trim().includes(dia));
+        async function fetchMenu(dia) {
+            const res = await fetch(sheetUrl);
+            const data = await res.text();
+            const filas = data.split('\n').map(f => f.split(','));
+            const menu = filas.find(f => f[0].trim().includes(dia));
 
-                if(menu) {
-                    document.getElementById('displayDia').innerText = dia;
-                    document.getElementById('principio').innerText = menu[1] || "-";
-                    document.getElementById('proteina').innerText = menu[2] || "-";
-                    document.getElementById('acomp').innerText = menu[3] || "-";
-                    document.getElementById('sopa').innerText = menu[4] || "-";
-                    document.getElementById('bebida').innerText = menu[5] || "-";
-                }
-            } catch (e) { alert("Error al conectar con Google Sheets"); }
+            if(menu) {
+                document.getElementById('diaTxt').innerText = dia;
+                document.getElementById('principio').innerText = menu[1]; // Col B
+                document.getElementById('proteina').innerText = menu[2];  // Col C
+                document.getElementById('acomp').innerText = menu[3];     // Col D
+                document.getElementById('sopa').innerText = menu[4];      // Col E (entradas)
+                document.getElementById('bebida').innerText = menu[5];    // Col F (bebidas)
+            }
         }
 
-        function descargarImagen() {
-            const container = document.getElementById("flyer-export");
-            html2canvas(container, { useCORS: true }).then(canvas => {
+        async function compartirImagen() {
+            const flyer = document.getElementById("flyer");
+            const canvas = await html2canvas(flyer, { useCORS: true, scale: 3 });
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], "tamarindo.png", { type: "image/png" });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file], title: 'Menú Tamarindo' });
+                } else { alert("Navegador no compatible. Usa 'Guardar Imagen'"); }
+            });
+        }
+
+        function descargarFlyer() {
+            html2canvas(document.getElementById("flyer"), { scale: 3 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `Menu_Tamarindo_${document.getElementById('displayDia').innerText}.png`;
-                link.href = canvas.toDataURL("image/png");
+                link.download = 'menu_tamarindo.png';
+                link.href = canvas.toDataURL();
                 link.click();
             });
         }
 
-        function compartirWhatsApp() {
-            const dia = document.getElementById('displayDia').innerText;
-            const prot = document.getElementById('proteina').innerText;
-            const msg = `*Menú Tamarindo - ${dia}*%0A🍖 Proteína: ${prot}%0A🥗 Principio: ${document.getElementById('principio').innerText}%0A🥤 Bebida: ${document.getElementById('bebida').innerText}%0A💰 Solo $12.000`;
-            window.open(`https://wa.me/?text=${msg}`, '_blank');
-        }
-
-        // Inicio automático
+        // Auto-detectar día
         const dias = ["DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNE", "SABADO"];
         const hoy = dias[new Date().getDay()] === "DOMINGO" ? "LUNES" : dias[new Date().getDay()];
-        document.getElementById('daySelector').value = hoy;
-        cargarMenu(hoy);
+        document.getElementById('selDia').value = hoy;
+        fetchMenu(hoy);
     </script>
 </body>
 </html>
